@@ -13,7 +13,7 @@ export function MainPage() {
   const [error, setError] = useState("");
   const debounceGetPhotosList = useDebounce(getPhotosList, 500);
 
-  let tg = window.Telegram.WebApp;
+  const tg = window.Telegram.WebApp;
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value);
@@ -43,7 +43,10 @@ export function MainPage() {
         setBotId(res.data.botId);
         setList(res.data.photosList);
       })
-      .catch((err) => setError(String(err)))
+      .catch((err) => {
+        setError(String(err));
+        console.log(err);
+      })
       .finally(() => setLoading(false));
   }
 
