@@ -28,7 +28,7 @@ export function MainPage() {
 
     axios
       .post(
-        `https://telegram-webapp-server-kh82y3j77-justvv74.vercel.app/search`,
+        `https://telegram-webapp-server.vercel.app/search`,
         {
           userId: tg?.initDataUnsafe?.user?.id || "1308147330",
           tag: value,
@@ -52,9 +52,7 @@ export function MainPage() {
 
   function test() {
     axios
-      .get(
-        `https://telegram-webapp-server-kh82y3j77-justvv74.vercel.app:3000/test`
-      )
+      .get(`https://telegram-webapp-server.vercel.app:3000/test`)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   }
