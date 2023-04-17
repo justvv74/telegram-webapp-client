@@ -65,7 +65,7 @@ export function MainPage() {
       )}
       {loading && <div className={styles.spinner}></div>}
       {error && <p className={styles.error}>{`Ошибка: ${error}`}</p>}
-      {list.length === 0 && !loading && <p>{"Фотографий нет:("}</p>}
+      {list.length === 0 && !error && !loading && <p>{"Фотографий нет:("}</p>}
     </div>
   );
 }
