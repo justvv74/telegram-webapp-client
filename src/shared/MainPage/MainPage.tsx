@@ -28,7 +28,7 @@ export function MainPage() {
 
     axios
       .post(
-        `${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}/search`,
+        `${process.env.REACT_APP_SERVER_HOST}/search`,
         {
           userId: tg?.initDataUnsafe?.user?.id || "1308147330",
           tag: value,
@@ -52,9 +52,7 @@ export function MainPage() {
 
   function test() {
     axios
-      .get(
-        `${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}/test`
-      )
+      .get(`${process.env.REACT_APP_SERVER_HOST}/test`)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   }

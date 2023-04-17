@@ -19,7 +19,7 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
     setCopiedError(false);
     axios
       .post(
-        `${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}/photo`,
+        `${process.env.REACT_APP_SERVER_HOST}/photo`,
         {
           url: element.src,
         },
