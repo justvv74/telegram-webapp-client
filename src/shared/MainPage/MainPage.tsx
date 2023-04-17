@@ -50,6 +50,15 @@ export function MainPage() {
       .finally(() => setLoading(false));
   }
 
+  function test() {
+    axios
+      .get(
+        `${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}/test`
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  }
+
   return (
     <div className={styles.mainBox}>
       <input
@@ -59,6 +68,7 @@ export function MainPage() {
         onChange={handleChange}
         placeholder="Search"
       />
+      <button onClick={test}>test</button>
       {!error && (
         <ul className={styles.list}>
           {list.map((item) => (
