@@ -28,7 +28,7 @@ export function MainPage() {
 
     axios
       .post(
-        `https://telegram-webapp-server.vercel.app/search`,
+        `${process.env.REACT_APP_SERVER_HOST}/search`,
         {
           userId: tg?.initDataUnsafe?.user?.id || "1308147330",
           tag: value,
@@ -45,16 +45,8 @@ export function MainPage() {
       })
       .catch((err) => {
         setError(String(err));
-        console.log(err);
       })
       .finally(() => setLoading(false));
-  }
-
-  function test() {
-    axios
-      .get(`https://telegram-webapp-server.vercel.app:3000/test`)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
   }
 
   return (
@@ -66,7 +58,6 @@ export function MainPage() {
         onChange={handleChange}
         placeholder="Search"
       />
-      <button onClick={test}>test</button>
       {!error && (
         <ul className={styles.list}>
           {list.map((item) => (
