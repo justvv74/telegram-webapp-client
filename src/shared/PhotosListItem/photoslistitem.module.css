@@ -1,0 +1,62 @@
+.item {
+  position: relative;
+  border-radius: 10px;
+  width: 140px;
+  height: 180px;
+  box-shadow: 0px 0px 6px rgba(63, 63, 63, 0.25);
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  cursor: zoom-in;
+}
+
+.btn {
+  z-index: 10;
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  border-radius: 4px;
+  border: none;
+  padding: 5px 24px;
+  color: var(--white);
+  background-color: var(--black);
+  transform: translate(-50%, 0);
+  transition-property: color, background-color;
+  transition-duration: 0.1s;
+  transition-timing-function: ease;
+  cursor: pointer;
+}
+
+.btn:hover {
+  color: var(--white);
+  background-color: var(--grey3C);
+}
+
+.btn:active {
+  color: var(--black);
+  background-color: var(--greyEE);
+}
+
+.btnActive {
+  color: var(--black) !important;
+  background-color: var(--greyEE) !important;
+}
+
+.btnImage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+@media (max-width: 340px) {
+  .item {
+    width: 130px;
+    height: 170px;
+  }
+}
