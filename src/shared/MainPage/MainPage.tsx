@@ -28,7 +28,7 @@ export function MainPage() {
 
     axios
       .post(
-        `${process.env.REACT_APP_SERVER_HOST}/search`,
+        `${process.env.REACT_APP_SERVER_HOST}${process.env.REACT_APP_SERVER_PORT}/search`,
         {
           userId: tg?.initDataUnsafe?.user?.id || "1308147330",
           tag: value,
@@ -52,7 +52,7 @@ export function MainPage() {
 
   function test() {
     axios
-      .get(`${process.env.REACT_APP_SERVER_HOST}/test`)
+      .get(`https://telegram-webapp-server.vercel.app:3000/test`)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   }
