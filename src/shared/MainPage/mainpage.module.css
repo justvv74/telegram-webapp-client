@@ -36,22 +36,30 @@
 }
 
 .spinner {
+  z-index: 100;
   position: absolute;
   top: 63px;
-  height: 22px;
-  aspect-ratio: 2;
-  border: 2px solid transparent;
-  background: radial-gradient(farthest-side, red 98%, #0000) left/10px 10px,
-    radial-gradient(farthest-side, green 98%, #0000) center/10px 10px,
-    radial-gradient(farthest-side, blue 98%, #0000) right/10px 10px, #fff;
-  background-repeat: no-repeat;
-  filter: blur(4px) contrast(10);
-  animation: spinner 1s infinite;
+  left: 50%;
+  height: 20px;
+  width: 20px;
+  margin-left: -15px;
+  border-right: 3px solid black;
+  border-top: 3px solid white;
+  border-bottom: 3px solid white;
+  border-left: 3px solid black;
+  border-radius: 50%;
+  animation: spin 1s infinite linear;
 }
 
-@keyframes spinner {
-  100% {
-    background-position: right, left, center, right;
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(359deg);
+    transform: rotate(359deg);
   }
 }
 
