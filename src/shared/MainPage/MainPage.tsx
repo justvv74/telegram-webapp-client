@@ -30,7 +30,9 @@ export function MainPage() {
       .post(
         `${process.env.REACT_APP_SERVER_HOST}/search`,
         {
-          userId: tg?.initDataUnsafe?.user?.id || "855252579",
+          userId:
+            tg?.initDataUnsafe?.user?.id ||
+            `${process.env.REACT_APP_TELEGRAM_ID}`,
           tag: value,
         },
         {
