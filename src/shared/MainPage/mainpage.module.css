@@ -40,10 +40,10 @@
   top: 63px;
   height: 22px;
   aspect-ratio: 2;
-  border: 2px solid #fff;
-  background: radial-gradient(farthest-side, #000 98%, #0000) left/10px 10px,
-    radial-gradient(farthest-side, #000 98%, #0000) center/10px 10px,
-    radial-gradient(farthest-side, #000 98%, #0000) right/10px 10px, #fff;
+  border: 2px solid transparent;
+  background: radial-gradient(farthest-side, red 98%, #0000) left/10px 10px,
+    radial-gradient(farthest-side, green 98%, #0000) center/10px 10px,
+    radial-gradient(farthest-side, blue 98%, #0000) right/10px 10px, #fff;
   background-repeat: no-repeat;
   filter: blur(4px) contrast(10);
   animation: spinner 1s infinite;
