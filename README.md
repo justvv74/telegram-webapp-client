@@ -13,3 +13,7 @@
 **Server:** Node, Express, PostgreSQL, TypeScript, telegram-bot-api
 
 
+## 🔗 Ссылка на бота
+[![Галлерея](https://img.shields.io/badge/Bot-Галерея-Green)](https://t.me/webapp_gallery_bot)
+
+
