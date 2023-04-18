@@ -30,7 +30,7 @@ export function MainPage() {
       .post(
         `${process.env.REACT_APP_SERVER_HOST}/search`,
         {
-          userId: tg?.initDataUnsafe?.user?.id || "1308147330",
+          userId: tg?.initDataUnsafe?.user?.id || "",
           tag: value,
         },
         {
