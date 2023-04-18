@@ -30,7 +30,7 @@ export function MainPage() {
       .post(
         `${process.env.REACT_APP_SERVER_HOST}/search`,
         {
-          userId: tg?.initDataUnsafe?.user?.id || "",
+          userId: tg?.initDataUnsafe?.user?.id || "855252579",
           tag: value,
         },
         {
@@ -40,11 +40,12 @@ export function MainPage() {
         }
       )
       .then((res) => {
+        console.log(res);
         setBotId(res.data.botId);
         setList(res.data.photosList);
       })
       .catch((err) => {
-        setError(String(err));
+        setError(String(err.code));
       })
       .finally(() => setLoading(false));
   }
@@ -67,6 +68,7 @@ export function MainPage() {
       )}
       {loading && <div className={styles.spinner}></div>}
       {error && <p className={styles.error}>{`Ошибка: ${error}`}</p>}
+
       {list.length === 0 && !error && !loading && <p>{"Фотографий нет:("}</p>}
     </div>
   );

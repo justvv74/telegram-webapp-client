@@ -52,16 +52,17 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
     setIsFullscreenPhoto(true);
     document.body.classList.add("bodyNoScroll");
   }
-
+  console.log("item", item);
   return (
     <li className={styles.item}>
       <img
         className={styles.image}
-        src={`https://api.telegram.org/file/bot${botId}/${item}`}
+        src={`https://api.telegram.org/file/bot${botId}/${item[0]}`}
         alt=""
         ref={image}
         onClick={handleClick}
       />
+      <p className={styles.tag}>{item[1] === null ? "без тега" : item[1]}</p>
       <button
         className={
           copied ? `${styles.btn} ${styles.btnActive}` : `${styles.btn}`
@@ -74,7 +75,7 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
       </button>
       {isFullscreenPhoto && (
         <PhotoFullscreen
-          img={`https://api.telegram.org/file/bot${botId}/${item}`}
+          img={`https://api.telegram.org/file/bot${botId}/${item[0]}`}
           modalOpen={modalOpen}
         />
       )}
