@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import styles from "./photoslistitem.module.css";
 import { PhotoFullscreen } from "./PhotoFullscreen";
 import axios from "axios";
+import userEvent from "@testing-library/user-event";
+import img from "../../assets/img/magnifyingglass.svg";
 
 interface IPhotosListItem {
   botId: string;
@@ -9,6 +11,7 @@ interface IPhotosListItem {
 }
 
 export function PhotosListItem({ item, botId }: IPhotosListItem) {
+  const ref = useRef<HTMLButtonElement>(null);
   const image = useRef<HTMLImageElement>(null);
   const [copied, setCopied] = useState(false);
   const [isFullscreenPhoto, setIsFullscreenPhoto] = useState(false);
@@ -30,14 +33,16 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
           responseType: "blob",
         }
       )
-      .then((res) => {
-        navigator.clipboard.write([
+      .then(async (res) => {
+        await navigator.clipboard.write([
           new ClipboardItem({
             [res.data.type]: res.data,
           }),
         ]);
       })
-      .catch((err) => setCopiedError(true));
+      .catch((err) => {
+        setCopiedError(true);
+      });
 
     setTimeout(() => {
       setCopied(false);
@@ -52,7 +57,7 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
     setIsFullscreenPhoto(true);
     document.body.classList.add("bodyNoScroll");
   }
-  console.log("item", item);
+
   return (
     <li className={styles.item}>
       <img
@@ -70,6 +75,7 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
         onClick={() =>
           image.current !== null ? saveImage(image.current) : null
         }
+        ref={ref}
       >
         {copied ? (copiedError ? "Error" : "Copied") : "Copy"}
       </button>
