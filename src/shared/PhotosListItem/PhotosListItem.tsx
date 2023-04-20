@@ -69,7 +69,14 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
         ref={image}
         onClick={handleClick}
       />
-      <p className={styles.tag}>{item[1] === null ? "без тега" : item[1]}</p>
+      {/* <p className={styles.tag}>{item[1] === null ? "без тега" : item[1]}</p> */}
+      <p className={styles.tag}>
+        {copiedError
+          ? copiedErrorValue
+          : item[1] === null
+          ? "без тега"
+          : item[1]}
+      </p>
       <button
         className={
           copied ? `${styles.btn} ${styles.btnActive}` : `${styles.btn}`
@@ -81,7 +88,6 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
       >
         {copied ? (copiedError ? "Error" : "Copied") : "Copy"}
       </button>
-      {copiedError && <p>{copiedErrorValue}</p>}
       {isFullscreenPhoto && (
         <PhotoFullscreen
           img={`https://api.telegram.org/file/bot${botId}/${item[0]}`}
