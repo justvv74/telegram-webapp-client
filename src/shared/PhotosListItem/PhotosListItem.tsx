@@ -21,7 +21,7 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
   async function saveImage(element: HTMLImageElement) {
     setCopied(true);
     setCopiedError(false);
-    axios
+    const blob = await axios
       .post(
         `${process.env.REACT_APP_SERVER_HOST}/photo`,
         {
@@ -35,16 +35,18 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
         }
       )
       .then(async (res) => {
-        await navigator.clipboard.write([
-          new ClipboardItem({
-            [res.data.type]: res.data,
-          }),
-        ]);
+        return res.data;
       })
       .catch((err) => {
         setCopiedErrorValue(String(err));
         setCopiedError(true);
       });
+
+    await navigator.clipboard.write([
+      new ClipboardItem({
+        [blob.type]: blob,
+      }),
+    ]);
 
     setTimeout(() => {
       setCopied(false);
