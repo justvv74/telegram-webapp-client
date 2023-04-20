@@ -42,7 +42,6 @@ export function MainPage() {
         }
       )
       .then((res) => {
-        console.log(res);
         setBotId(res.data.botId);
         setList(res.data.photosList);
       })

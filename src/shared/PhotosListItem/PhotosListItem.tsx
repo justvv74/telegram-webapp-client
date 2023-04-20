@@ -16,6 +16,7 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
   const [copied, setCopied] = useState(false);
   const [isFullscreenPhoto, setIsFullscreenPhoto] = useState(false);
   const [copiedError, setCopiedError] = useState(false);
+  const [copiedErrorValue, setCopiedErrorValue] = useState("");
 
   async function saveImage(element: HTMLImageElement) {
     setCopied(true);
@@ -41,12 +42,13 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
         ]);
       })
       .catch((err) => {
+        setCopiedErrorValue(String(err));
         setCopiedError(true);
       });
 
     setTimeout(() => {
       setCopied(false);
-    }, 2000);
+    }, 3000);
   }
 
   function modalOpen(value: boolean) {
@@ -79,6 +81,7 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
       >
         {copied ? (copiedError ? "Error" : "Copied") : "Copy"}
       </button>
+      {copiedError && <p>{copiedErrorValue}</p>}
       {isFullscreenPhoto && (
         <PhotoFullscreen
           img={`https://api.telegram.org/file/bot${botId}/${item[0]}`}
