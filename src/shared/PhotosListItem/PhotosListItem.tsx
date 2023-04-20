@@ -42,11 +42,17 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
         setCopiedError(true);
       });
 
-    await navigator.clipboard.write([
-      new ClipboardItem({
-        [blob.type]: blob,
-      }),
-    ]);
+    await navigator.clipboard
+      .write([
+        new ClipboardItem({
+          [await blob.type]: await blob,
+        }),
+      ])
+      .then((res) => console.log("copied"))
+      .catch((err) => {
+        setCopiedErrorValue(String(err));
+        setCopiedError(true);
+      });
 
     setTimeout(() => {
       setCopied(false);
