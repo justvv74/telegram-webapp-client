@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import styles from "./photoslistitem.module.css";
 import { PhotoFullscreen } from "./PhotoFullscreen";
 import axios from "axios";
-// import { copyq } from "../../hooks/copy";
 
 interface IPhotosListItem {
   botId: string;
@@ -15,13 +14,11 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
   const [copied, setCopied] = useState(false);
   const [isFullscreenPhoto, setIsFullscreenPhoto] = useState(false);
   const [copyError, setCopyError] = useState(false);
-  // const [copyErrorValue, setCopyErrorValue] = useState("");
 
   async function saveImage(element: HTMLImageElement) {
     setCopied(true);
     setCopyError(false);
 
-    // copyq();
     axios
       .post(
         `${process.env.REACT_APP_SERVER_HOST}/photo`,
@@ -36,22 +33,18 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
         }
       )
       .then((res) => {
-        setTimeout(() => {
-          navigator.clipboard
-            .write([
-              new ClipboardItem({
-                [res.data.type]: res.data,
-              }),
-            ])
-            .then(() => console.log("copied"))
-            .catch((err) => {
-              // setCopyErrorValue(String(err));
-              setCopyError(true);
-            });
-        }, 500);
+        navigator.clipboard
+          .write([
+            new ClipboardItem({
+              [res.data.type]: res.data,
+            }),
+          ])
+          .then(() => console.log("copied"))
+          .catch((err) => {
+            setCopyError(true);
+          });
       })
       .catch((err) => {
-        // setCopyErrorValue(String(err));
         setCopyError(true);
       });
 
@@ -79,11 +72,7 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
         onClick={handleClick}
       />
       <p className={styles.tag}>{item[1] === null ? "без тега" : item[1]}</p>
-      {/* <p className={styles.tag}>
-        {copyError ? copyErrorValue : item[1] === null ? "без тега" : item[1]}
-      </p> */}
       <button
-        id="btn"
         className={
           copied ? `${styles.btn} ${styles.btnActive}` : `${styles.btn}`
         }
