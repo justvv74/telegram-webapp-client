@@ -1,9 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./photoslistitem.module.css";
 import { PhotoFullscreen } from "./PhotoFullscreen";
 import axios from "axios";
-import userEvent from "@testing-library/user-event";
-import img from "../../assets/img/magnifyingglass.svg";
+// import { copyq } from "../../hooks/copy";
 
 interface IPhotosListItem {
   botId: string;
@@ -15,13 +14,15 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
   const image = useRef<HTMLImageElement>(null);
   const [copied, setCopied] = useState(false);
   const [isFullscreenPhoto, setIsFullscreenPhoto] = useState(false);
-  const [copiedError, setCopiedError] = useState(false);
-  const [copiedErrorValue, setCopiedErrorValue] = useState("");
+  const [copyError, setCopyError] = useState(false);
+  // const [copyErrorValue, setCopyErrorValue] = useState("");
 
   async function saveImage(element: HTMLImageElement) {
     setCopied(true);
-    setCopiedError(false);
-    const blob = await axios
+    setCopyError(false);
+
+    // copyq();
+    axios
       .post(
         `${process.env.REACT_APP_SERVER_HOST}/photo`,
         {
@@ -34,24 +35,24 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
           responseType: "blob",
         }
       )
-      .then(async (res) => {
-        return res.data;
+      .then((res) => {
+        setTimeout(() => {
+          navigator.clipboard
+            .write([
+              new ClipboardItem({
+                [res.data.type]: res.data,
+              }),
+            ])
+            .then(() => console.log("copied"))
+            .catch((err) => {
+              // setCopyErrorValue(String(err));
+              setCopyError(true);
+            });
+        }, 500);
       })
       .catch((err) => {
-        setCopiedErrorValue(String(err));
-        setCopiedError(true);
-      });
-
-    await navigator.clipboard
-      .write([
-        new ClipboardItem({
-          [await blob.type]: await blob,
-        }),
-      ])
-      .then((res) => console.log("copied"))
-      .catch((err) => {
-        setCopiedErrorValue(String(err));
-        setCopiedError(true);
+        // setCopyErrorValue(String(err));
+        setCopyError(true);
       });
 
     setTimeout(() => {
@@ -77,15 +78,12 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
         ref={image}
         onClick={handleClick}
       />
-      {/* <p className={styles.tag}>{item[1] === null ? "без тега" : item[1]}</p> */}
-      <p className={styles.tag}>
-        {copiedError
-          ? copiedErrorValue
-          : item[1] === null
-          ? "без тега"
-          : item[1]}
-      </p>
+      <p className={styles.tag}>{item[1] === null ? "без тега" : item[1]}</p>
+      {/* <p className={styles.tag}>
+        {copyError ? copyErrorValue : item[1] === null ? "без тега" : item[1]}
+      </p> */}
       <button
+        id="btn"
         className={
           copied ? `${styles.btn} ${styles.btnActive}` : `${styles.btn}`
         }
@@ -94,7 +92,7 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
         }
         ref={ref}
       >
-        {copied ? (copiedError ? "Error" : "Copied") : "Copy"}
+        {copied ? (copyError ? "Error" : "Copied") : "Copy"}
       </button>
       {isFullscreenPhoto && (
         <PhotoFullscreen
