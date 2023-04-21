@@ -12,11 +12,14 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
   const ref = useRef<HTMLButtonElement>(null);
   const image = useRef<HTMLImageElement>(null);
   const [copied, setCopied] = useState(false);
-  const [isFullscreenPhoto, setIsFullscreenPhoto] = useState(false);
+  const [toChat, setToChat] = useState(false);
   const [copyError, setCopyError] = useState(false);
+  const [toChatError, setToChatError] = useState(false);
+  const [isFullscreenPhoto, setIsFullscreenPhoto] = useState(false);
+
+  const tg = window.Telegram.WebApp;
 
   async function saveImage(element: HTMLImageElement) {
-    setCopied(true);
     setCopyError(false);
 
     axios
@@ -39,7 +42,12 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
               [res.data.type]: res.data,
             }),
           ])
-          .then(() => console.log("copied"))
+          .then(() => {
+            setCopied(true);
+            setTimeout(() => {
+              setCopied(false);
+            }, 2000);
+          })
           .catch((err) => {
             setCopyError(true);
           });
@@ -47,10 +55,33 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
       .catch((err) => {
         setCopyError(true);
       });
+  }
 
-    setTimeout(() => {
-      setCopied(false);
-    }, 3000);
+  function handleClickToChat() {
+    setToChatError(false);
+
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_HOST}/tochat`,
+        {
+          userId:
+            tg?.initDataUnsafe?.user?.id ||
+            `${process.env.REACT_APP_TELEGRAM_ID}`,
+          fileId: item[2],
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
+      .then(() => {
+        setToChat(true);
+        setTimeout(() => {
+          setToChat(false);
+        }, 2000);
+      })
+      .catch(() => setToChatError(true));
   }
 
   function modalOpen(value: boolean) {
@@ -71,18 +102,30 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
         ref={image}
         onClick={handleClick}
       />
-      <p className={styles.tag}>{item[1] === null ? "без тега" : item[1]}</p>
-      <button
-        className={
-          copied ? `${styles.btn} ${styles.btnActive}` : `${styles.btn}`
-        }
-        onClick={() =>
-          image.current !== null ? saveImage(image.current) : null
-        }
-        ref={ref}
-      >
-        {copied ? (copyError ? "Error" : "Copied") : "Copy"}
-      </button>
+      <p className={styles.tag}>
+        {item[1] === null ? "без тега" : item[1].toLowerCase().trim()}
+      </p>
+      <div className={styles.btnBox}>
+        <button
+          className={
+            copied ? `${styles.btn} ${styles.btnActive}` : `${styles.btn}`
+          }
+          onClick={() =>
+            image.current !== null ? saveImage(image.current) : null
+          }
+          ref={ref}
+        >
+          {copied ? (copyError ? "Error" : "Copied") : "Copy"}
+        </button>
+        <button
+          className={
+            toChat ? `${styles.btn} ${styles.btnActive}` : `${styles.btn}`
+          }
+          onClick={handleClickToChat}
+        >
+          {toChat ? (toChatError ? "Error" : "Sent") : "To chat"}
+        </button>
+      </div>
       {isFullscreenPhoto && (
         <PhotoFullscreen
           img={`https://api.telegram.org/file/bot${botId}/${item[0]}`}
