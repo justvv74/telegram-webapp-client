@@ -58,30 +58,37 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
   }
 
   function handleClickToChat() {
-    setToChatError(false);
+    const selection = window.getSelection();
+    if (selection) selection.removeAllRanges();
 
-    axios
-      .post(
-        `${process.env.REACT_APP_SERVER_HOST}/tochat`,
-        {
-          userId:
-            tg?.initDataUnsafe?.user?.id ||
-            `${process.env.REACT_APP_TELEGRAM_ID}`,
-          fileId: item[2],
-        },
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      )
-      .then(() => {
-        setToChat(true);
-        setTimeout(() => {
-          setToChat(false);
-        }, 2000);
-      })
-      .catch(() => setToChatError(true));
+    const range = document.createRange();
+    if (image.current) range.selectNode(image.current);
+    if (selection) selection.addRange(range);
+
+    // setToChatError(false);
+
+    // axios
+    //   .post(
+    //     `${process.env.REACT_APP_SERVER_HOST}/tochat`,
+    //     {
+    //       userId:
+    //         tg?.initDataUnsafe?.user?.id ||
+    //         `${process.env.REACT_APP_TELEGRAM_ID}`,
+    //       fileId: item[2],
+    //     },
+    //     {
+    //       headers: {
+    //         "Content-Type": "application/x-www-form-urlencoded",
+    //       },
+    //     }
+    //   )
+    //   .then(() => {
+    //     setToChat(true);
+    //     setTimeout(() => {
+    //       setToChat(false);
+    //     }, 2000);
+    //   })
+    //   .catch(() => setToChatError(true));
   }
 
   function modalOpen(value: boolean) {
