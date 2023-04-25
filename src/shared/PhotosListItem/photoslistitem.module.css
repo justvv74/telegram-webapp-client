@@ -17,6 +17,7 @@
   height: 100px;
   width: 120px;
   cursor: zoom-in;
+  pointer-events: all;
 }
 
 .tag {

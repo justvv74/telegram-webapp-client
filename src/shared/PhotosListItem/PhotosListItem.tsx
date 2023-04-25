@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./photoslistitem.module.css";
 import { PhotoFullscreen } from "./PhotoFullscreen";
 import axios from "axios";
@@ -19,7 +19,7 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
 
   const tg = window.Telegram.WebApp;
 
-  async function saveImage(element: HTMLImageElement) {
+  async function saveImage(element: any) {
     setCopyError(false);
 
     axios
@@ -58,37 +58,30 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
   }
 
   function handleClickToChat() {
-    const selection = window.getSelection();
-    if (selection) selection.removeAllRanges();
+    setToChatError(false);
 
-    const range = document.createRange();
-    if (image.current) range.selectNode(image.current);
-    if (selection) selection.addRange(range);
-
-    // setToChatError(false);
-
-    // axios
-    //   .post(
-    //     `${process.env.REACT_APP_SERVER_HOST}/tochat`,
-    //     {
-    //       userId:
-    //         tg?.initDataUnsafe?.user?.id ||
-    //         `${process.env.REACT_APP_TELEGRAM_ID}`,
-    //       fileId: item[2],
-    //     },
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/x-www-form-urlencoded",
-    //       },
-    //     }
-    //   )
-    //   .then(() => {
-    //     setToChat(true);
-    //     setTimeout(() => {
-    //       setToChat(false);
-    //     }, 2000);
-    //   })
-    //   .catch(() => setToChatError(true));
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_HOST}/tochat`,
+        {
+          userId:
+            tg?.initDataUnsafe?.user?.id ||
+            `${process.env.REACT_APP_TELEGRAM_ID}`,
+          fileId: item[2],
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
+      .then(() => {
+        setToChat(true);
+        setTimeout(() => {
+          setToChat(false);
+        }, 2000);
+      })
+      .catch(() => setToChatError(true));
   }
 
   function modalOpen(value: boolean) {
@@ -101,15 +94,21 @@ export function PhotosListItem({ item, botId }: IPhotosListItem) {
   }
 
   return (
-    <li className={styles.item}>
+    <li
+      className={styles.item}
+      itemScope
+      itemType="https://schema.org/ImageObject"
+    >
+      <meta itemProp="name" content="Пингвины"></meta>
       <img
         className={styles.image}
         src={`https://api.telegram.org/file/bot${botId}/${item[0]}`}
-        alt=""
+        itemProp="contentUrl"
+        alt="картинка случайная"
         ref={image}
         onClick={handleClick}
       />
-      <p className={styles.tag}>
+      <p className={styles.tag} itemProp="description">
         {item[1] === null ? "без тега" : item[1].toLowerCase().trim()}
       </p>
       <div className={styles.btnBox}>
